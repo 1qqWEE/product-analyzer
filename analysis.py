@@ -1,39 +1,41 @@
-def safe_product_info(product):
-    cc = {
-        "title": product.get("title", "Unknown"),
-        "price": product.get("price", 0),
-        "rating": product.get("rating", 0)
-    }
-    return cc
+class Product:
+    def __init__(self, data):
+        self.title = data.get("title", "Unknown")
+        self.price = data.get("price", 0)
+        self.rating = data.get("rating", 0)
+        self.reviews = data.get("reviews", [])
 
-def average_rating(product):
-    total = 0
-    count = 0
-    mid = 0
-    for review in product["reviews"]:
-        count = count + 1
-        total = total + review["rating"]
-        mid = total / count
-    return mid
+    def average_rating(self):
+        if not self.reviews:
+            return 0
+        total = sum(review["rating"] for review in self.reviews)
+        return total / len(self.reviews)
 
-def clean_products(products):
-    cleaned = []
-    for product in products:
-        cleaned.append(safe_product_info(product))
-    return cleaned
+    def to_dict(self):
+        return {
+            "title": self.title,
+            "price": self.price,
+            "rating": self.average_rating()
+        }
 
-def product_report(products):
+
+def product_report(products_data):
     result = []
-    for product in products:
-        rating = average_rating(product)
+
+    for item in products_data:
+        product = Product(item)
+        rating = product.average_rating()
+
         if rating >= 4.5:
             result.append({
-                "title": product["title"],
-                "price": product["price"],
+                "title": product.title,
+                "price": product.price,
                 "rating": rating,
-                "cheap": product["price"] < 20
+                "cheap": product.price < 20
             })
+
     return result
+
 
 def statistics(products):
     if not products:
