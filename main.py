@@ -11,6 +11,9 @@ save_report(stats)
 
 stats = load_report()
 
-print(stats)
-print(stats["Среднюю цену"])
-print(stats["Самый дорогой товар"]["title"])
+if stats:
+    print(stats)
+    print(stats["Среднюю цену"])
+    print(stats["Самый дорогой товар"]["title"])
+else:
+    print("Отчёт пуст или не найден")
