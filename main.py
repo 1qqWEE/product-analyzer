@@ -1,15 +1,15 @@
 from api import get_products
 from analysis import product_report, statistics
-from storage import save_report, load_report
+from storage import save_products, load_products
 
 products = get_products()
 
 report_products = product_report(products)
-stats = statistics(report_products)
 
-save_report(stats)
 
-stats = load_report()
+save_products(report_products)
+
+stats = statistics(load_products())
 
 if stats:
     print(stats)
